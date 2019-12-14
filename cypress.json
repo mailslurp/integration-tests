@@ -1,0 +1,7 @@
+{
+  "baseUrl": "https://app.mailslurp.com",
+  "defaultCommandTimeout": 10000,
+  "video": false,
+  "viewportHeight": 800,
+  "viewportWidth": 1200
+}
