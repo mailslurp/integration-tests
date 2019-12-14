@@ -26,7 +26,7 @@ context('MailSlurp sign-up process', () => {
   })
   it('sends and email with an access link', () => {
     cy.receiveEmail(inboxId).then(email => {
-      expect(email.subject).to.contain('Hello')
+      expect(email.subject).to.contain('Access MailSlurp')
     })
   })
 })
