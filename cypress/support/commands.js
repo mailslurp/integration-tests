@@ -9,3 +9,5 @@ Cypress.Commands.add("createInbox", _ => {
   return mailslurp.createInbox(emailAddress)
 })
 Cypress.Commands.add("receiveEmail", inboxId => mailslurp.waitForLatestEmail(inboxId))
+Cypress.Commands.add("clickSidebar", path => cy.get(`.nav-link[href="${path}"]`).click())
+Cypress.Commands.add("getInputValue", name => cy.get(`input[name="${name}"]`).then($input => $input.val()))

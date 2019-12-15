@@ -1,6 +1,8 @@
 context('MailSlurp sign-up process', () => {
   let inboxId;
   let emailAddress;
+  let accessPath;
+  let userApiKey;
   it('renders the homescreen', () => {
     cy.visit('/')
     cy.get('.card-header')
@@ -27,6 +29,33 @@ context('MailSlurp sign-up process', () => {
   it('sends and email with an access link', () => {
     cy.receiveEmail(inboxId).then(email => {
       expect(email.subject).to.contain('Access MailSlurp')
+      const pattern = new RegExp(`https://app.mailslurp.com(/verify[^'"]+)`)
+      const matches = pattern.exec(email.body)
+      // replace HTML entities
+      accessPath = matches[1].replace(/&#x3D;/g, '=')
     })
+  })
+  it('accepts access code in email and logs in user', () => {
+    cy.visit(accessPath)
+    cy.get('.card-header').should('contain', 'Get Started')
+  })
+  it('allows navigation to settings page', () => {
+    cy.clickSidebar('/settings')
+  })
+  it('settings page shows api key', () => {
+    cy.getInputValue('api-key')
+      .then(value => {
+        userApiKey = value
+        expect(userApiKey).to.exist
+      });
+  })
+  it('allows api calls using api key', () => {
+    cy.request({
+      url: 'https://api.mailslurp.com/inboxes',
+      method: 'POST',
+      headers: {
+        'x-api-key': userApiKey
+      }
+    }).its('status').should('equal', 201)
   })
 })
