@@ -37,11 +37,11 @@ context('MailSlurp sign-up process', () => {
   })
   it('accepts access code in email and logs in user', () => {
     cy.visit(accessPath)
-    cy.get('.card-header').should('contain', 'Get Started')
-  })
+    cy.get('.card-header').should('contain', 'Welcome')
+  });
   it('allows navigation to settings page', () => {
     cy.clickSidebar('/settings')
-  })
+  });
   it('settings page shows api key', () => {
     cy.getInputValue('api-key')
       .then(value => {
